@@ -1,7 +1,5 @@
 console.log("app.js loaded successfully!");
 
-
-
 // from data.js
 var tableData = data;
 
@@ -33,9 +31,22 @@ function runEnter() {
     // Prevent page from refreshing
     d3.event.preventDefault();
 
+    // Select input and store in a variable
     var dateInput = d3.select('#datetime');
-
-    // Select the input
     var datetime = dateInput.property("value");
-    console.log(datetime);
+
+    // Filter datetimes that match the date input
+    var filteredData = tableData.filter(sighting => sighting.datetime === datetime);
+    
+    // Clean out list
+    tbody.html("");
+
+    // Append elements to list and repopulate
+    filteredData.forEach(function(sighting) {
+        var row = tbody.append('tr');
+        Object.entries(sighting).forEach(([key, value]) => {
+            var cell = row.append('td');
+            cell.text(value);
+        });
+    });
 };
